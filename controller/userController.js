@@ -2,6 +2,7 @@
  * userModel Request Controller.
  */
 const userModel = require("../model/userModel");
+const UserController = require("../model/userModel");
 
 /**
  * This method, adds a new user.
@@ -24,11 +25,11 @@ const newUser = async (req, res) => {
             new userModel({personalId, first_name, last_name, birthday, marital_status, password});
 
         // save new user.
-        newUser.save((err, newUser) => {
-            res.status(200).json(newUser);
-        })
+        const result = await UserController.create(req.body);
+        res.status(201).json(result);
     }
     catch (e) {
+        console.log(e)
         res.status(500).json(e);
     }
 };

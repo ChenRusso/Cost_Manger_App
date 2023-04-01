@@ -57,7 +57,6 @@ const userController = require('../controller/userController');
  */
 
 
-
 /**
  * @swagger
  * /user/resetUsers:

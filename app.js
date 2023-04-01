@@ -13,21 +13,19 @@ app.use(cors());
 // import all the routes
 const ConstRoute = require('./routes/cost');
 const UserRoute = require('./routes/user');
-const CategoryRoute = require('./routes/category');
 
 
 app.use(express.json());
 // part of the url of the routes
-app.use('/category', CategoryRoute);
 app.use('/user', UserRoute);
 app.use('/cost', ConstRoute);
 
 // connection to mongoose
-const url = process.env.MongoDB_URL || 'mongodb://localhost:27017';
+const url = process.env.MongoDB_URL || 'mongodb+srv://ChenRussoNodeJs:LianBar1@cluster1.dcd8xpg.mongodb.net/?retryWrites=true&w=majority';
 
 (async () => {
-    console.log(url);
     const db = await mongoose.connect(url);
+    console.log(url);
 })().catch(err => console.log(err));
 
 // Listen in port 8000

@@ -3,8 +3,8 @@
  */
 
 const costModel = require("../model/costModel");
-const CostAverageModel = require("../model/costAverageModel");
 const mongoose = require("mongoose");
+const CostAverageModel = require("../model/costAverageModel");
 
 let currentExpensesAverage = 5;
 let prevTotalSum = 0;
@@ -149,23 +149,23 @@ const newCost = async (req, res) => {
     try {
         // extract params form the body.
         const {description, sum, category, userId, date} = req.body;
-        const newCost =
-            new costModel({description, sum, category, userId, date});
+        const newCost = {description, sum, category, userId, date};
 
         // update the average db with the new cost.
         await expensesComputedAverage(date, sum, userId);
 
         // save the new cost in the db.
-        newCost.save((err, newCost) => {
-            // send the OK status for the user.
-            res.status(201).json(newCost);
-        })
+        const createdCost = await costModel.create(newCost);
+
+        // send the OK status for the user.
+        res.status(201).json(createdCost);
     }
     catch (e){
         // send error message for the user.
         res.status(500).json(e);
     }
 };
+
 
 /**
  * This method Calculate the total expenses average.
@@ -224,6 +224,7 @@ const expensesApproximationAverage = async (req, res) => {
  * This method using the Computed Pattern.
  * @param date
  * @param sumToAdd
+ * @param userId
  * @returns {Promise<void>} return fail or success
  */
 const expensesComputedAverage = async (date, sumToAdd, userId) => {
@@ -250,9 +251,7 @@ const expensesComputedAverage = async (date, sumToAdd, userId) => {
             const sum = sumToAdd;
             const average = sum;
             const newComputedAverage =
-                new CostAverageModel({sum, count,average, month, year,userId });
-
-            newComputedAverage.save();
+                await CostAverageModel.create({sum, count,average, month, year,userId });
         }
     }
     catch (e){
