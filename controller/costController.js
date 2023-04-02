@@ -16,7 +16,10 @@ let prevTotalSum = 0;
  * @param res response param
  * @returns {Promise<void>}  return fail or success
  */
-const resetCosts = async (req, res) => {
+
+
+const resetCosts = async (req, res) =>
+{
     try {
         // extract params from the url.
         const {userId} = req.params;
@@ -89,7 +92,7 @@ const getCostsReport = async (req, res) => {
 };
 
 /**
- * This method update spcific cost.
+ * This method update specific cost.
  * The update is transfer in the body of the request.
  * @param req request param
  * @param res response param
@@ -187,10 +190,12 @@ const expensesApproximationAverage = async (req, res) => {
             costs = JSON.parse(JSON.stringify(costs));
 
             // if the costs is not null:
-            if (costs) {
+            if (costs)
+            {
                 totalSum = 0;
                 // calculate the total sum from the db.
-                for (let i = 0; i < costs.length; i++) {
+                for (let i = 0; i < costs.length; i++)
+                {
                     totalSum += costs[i].sum;
                 }
 
@@ -202,7 +207,9 @@ const expensesApproximationAverage = async (req, res) => {
                 // send OK status for the user.
                 res.status(200).json(totalSum);
 
-            } else {
+            }
+            else
+            {
                 // send 204 status for the user.
                 currentExpensesAverage = 0;
                 res.status(204).json('No costs');
@@ -213,9 +220,10 @@ const expensesApproximationAverage = async (req, res) => {
             res.status(200).json(prevTotalSum);
         }
     }
-    catch (e){
+    catch (error)
+    {
         // send error status for the user.
-        res.status(500).json(e);
+        res.status(500).json(error);
     }
 };
 
@@ -254,9 +262,9 @@ const expensesComputedAverage = async (date, sumToAdd, userId) => {
                 await CostAverageModel.create({sum, count,average, month, year,userId });
         }
     }
-    catch (e){
+    catch (error){
         // if error occur then send error status for the user.
-        return res.status(500).json(e);
+        return res.status(500).json(error);
     }
 };
 
@@ -266,25 +274,31 @@ const expensesComputedAverage = async (date, sumToAdd, userId) => {
  * @param res response param
  * @returns {Promise<void>} return fail or success
  */
-const getExpensesComputedAverage = async (req, res) => {
-    try {
+const getExpensesComputedAverage = async (req, res) =>
+{
+    try
+    {
         // extract params from the url.
         const {userId} = req.params;
 
         // find all the costs average of the current user.
         const costsAverage = await CostAverageModel.find({userId});
 
-        if (costsAverage) {
+        if (costsAverage)
+        {
             // send OK status for the user.
             res.status(200).send(costsAverage);
-        } else {
+        }
+        else
+        {
             // send 204 status for the user.
-            res.status(204).json('No costs');
+            res.status(204).json('No costs to retrieve');
         }
     }
-    catch (e){
+    catch (error)
+    {
         // send error status for the user.
-        res.status(500).json(e);
+        res.status(500).json(error);
     }
 };
 

@@ -318,17 +318,3 @@ router.post('/add', costController.newCost);
 
 module.exports = router;
 
-
-
-/*
-/expenses
-router.get('/:userId', costController.getCosts);
-router.put('/:costId', costController.updateCost);
-router.get('', costController.getAll);
-
-
-GET -> /:ID
-get -> getAll -> ''
-PUT -> /:id -> BODY
-DELETE -> /:ID
- */

@@ -17,18 +17,20 @@ const newUser = async (req, res) => {
         } = req.body;
 
         // check if the user exists.
-        if (await isUserExists(personalId,res)) {
+        if (await isUserExists(personalId,res))
+        {
             res.status(409).json("User already exists!");
             return;
         }
         const newUser =
             new userModel({personalId, first_name, last_name, birthday, marital_status, password});
 
-        // save new user.
+        // create and save new user.
         const result = await UserController.create(req.body);
         res.status(201).json(result);
     }
-    catch (e) {
+    catch (e)
+    {
         console.log(e)
         res.status(500).json(e);
     }
@@ -40,18 +42,24 @@ const newUser = async (req, res) => {
  * @param res response param.
  * @returns {Promise<void>} failed or success.
  */
-const getUsers = async (req, res) => {
+
+const getUsers = async (req, res) =>
+{
     try {
         // find all users from db.
         const users = await userModel.find({});
 
-        if (users) {
+        if (users)
+        {
             res.status(200).send(users);
-        } else {
-            res.status(204).json('No users');
+        }
+        else
+        {
+            res.status(204).json('No users to retrieve');
         }
     }
-    catch (e) {
+    catch (e)
+    {
         res.status(500).json(e);
     }
 };
@@ -81,7 +89,8 @@ const resetUsers = async (req, res) => {
 
         res.status(205).json('Reset done!');
     }
-    catch (e) {
+    catch (e)
+    {
         res.status(500).json(e);
     }
 };
@@ -103,7 +112,8 @@ const putUser = async (req, res) => {
         } = req.body;
 
         // check if user is not exists.
-        if (! (await isUserExists(personalId,res))) {
+        if (! (await isUserExists(personalId,res)))
+        {
             res.status(409).json("User not exists!");
             return;
         }
@@ -116,7 +126,8 @@ const putUser = async (req, res) => {
 
         res.status(201).json(updatedUser);
     }
-    catch (e) {
+    catch (e)
+    {
         res.status(500).json(e);
     }
 };
@@ -145,7 +156,7 @@ const deleteUser = async (req, res) => {
  * This method check if the user is exists and the password is right
  * This method is for the login page.
  * @param req request param
- * @param res resoponse param
+ * @param res response param
  * @returns {Promise<void>} failed or success
  */
 const login = async (req,res) => {
@@ -164,7 +175,8 @@ const login = async (req,res) => {
         }
 
         // if the password is not right
-        if (isUserExists.password !== password) {
+        if (isUserExists.password !== password)
+        {
             res.status(401).json("User or password not valid");
             return;
         }
@@ -176,15 +188,12 @@ const login = async (req,res) => {
     }
 }
 
-const isUserExists = async (personalId, res) => {
-
+const isUserExists = async (personalId) =>
+{
     let userToFind = await userModel.findOne({personalId});
 
-    if (userToFind !== null) {
-        return true;
-    }
+    return userToFind !== null;
 
-    return false;
 }
 
 module.exports = {login, newUser, resetUsers, getUsers, putUser, deleteUser};
