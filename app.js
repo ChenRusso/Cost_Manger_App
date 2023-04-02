@@ -22,7 +22,7 @@ app.use('/user', UserRoute);
 app.use('/cost', ConstRoute);
 
 // connection to mongoose
-const url = 'mongodb+srv://ChenRussoNodeJs:LianBar1@cluster1.dcd8xpg.mongodb.net/?retryWrites=true&w=majority';
+const url = 'mongodb+srv://.dcd8xpg.mongodb.net/?retryWrites=true&w=majority';
 
 (async () => {
     const db = await mongoose.connect(url);
